@@ -1,12 +1,17 @@
 # Makefile for SDL3 Project on Windows (MinGW)
 
+# Specify the SDL3 installation directory 
+# (I'm using the sdl3-mingw64' release)
+
+SDL3_PATH := D:/Aplikacje/SDL3/x86_64-w64-mingw32
+
 # Compiler settings
 CXX := g++
 CXXFLAGS := -std=c++20 -Wall -g
-INCLUDES := -ID:/Aplikacje/SDL3/x86_64-w64-mingw32/include -I./include
+INCLUDES := -I$(SDL3_PATH)/include -I./include
 
 # Linker settings
-LDFLAGS := -LD:/Aplikacje/SDL3/x86_64-w64-mingw32/lib -lSDL3
+LDFLAGS := -L$(SDL3_PATH)/lib -lSDL3
 
 # Project structure
 SRC_DIR := src
@@ -25,23 +30,20 @@ all: $(BUILD_DIR) $(BIN_DIR) $(TARGET)
 # Link the executable
 $(TARGET): $(OBJECTS)
 	$(CXX) -o $@ $^ $(LDFLAGS)
-	copy "D:\Aplikacje\SDL3\x86_64-w64-mingw32\bin\SDL3.dll" "$(BIN_DIR)\"
+	@copy "$(SDL3_PATH)\bin\SDL3.dll" "$(BIN_DIR)\" >NUL
 
 # Compile source files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 # Create directories
-$(BIN_DIR):
-	@if not exist "$(BIN_DIR)" mkdir "$(BIN_DIR)"
-
-$(BUILD_DIR):
-	@if not exist "$(BUILD_DIR)" mkdir "$(BUILD_DIR)"
+$(BIN_DIR) $(BUILD_DIR):
+	@if not exist "$@" mkdir "$@"
 
 # Clean up
 clean:
-	@if exist "$(BUILD_DIR)\*.o" del /Q "$(BUILD_DIR)\*.o"
-	@if exist "$(BIN_DIR)\*.exe" del /Q "$(BIN_DIR)\*.exe"
+	@if exist "$(BUILD_DIR)" rmdir /S /Q "$(BUILD_DIR)"
+	@if exist "$(BIN_DIR)\Game.exe" del /Q "$(BIN_DIR)\Game.exe"
 	@if exist "$(BIN_DIR)\SDL3.dll" del /Q "$(BIN_DIR)\SDL3.dll"
 
 .PHONY: all clean
