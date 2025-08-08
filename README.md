@@ -1,2 +1,2 @@
-# GameIdea
-SDL3, C++ Game Project of a Top-Down Shooter \ Survival Game 
+# TowerDefense
+SDL3, C++ Game Project of a Tower Defense Game 
