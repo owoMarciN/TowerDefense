@@ -1,0 +1,7 @@
+# Ignore everything in build/ and lib/ folders
+build/
+lib/
+.vscode/
+
+# Ignore binary files
+*.o
